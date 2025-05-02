@@ -8,19 +8,38 @@ O Vault é utilizado pelo serviço `wallet-engine` para armazenar chaves privada
 
 ### Componentes Principais
 
-- `setup-vault.sh`: Script principal para configurar o Vault
-- `reset-vault.sh`: Script para resetar completamente o Vault
+- `scripts/setup-vault.sh`: Script principal para configurar o Vault
+- `scripts/reset-vault.sh`: Script para resetar completamente o Vault
 - `docker-compose.yml`: Configuração para executar o Vault em um container Docker
+- `Makefile`: Facilita a execução de comandos comuns
 - `.env`: Arquivo gerado automaticamente com as credenciais necessárias
 
 ## Como Usar
 
-### Configuração Inicial
+### Usando o Makefile (Recomendado)
 
-Para configurar o Vault pela primeira vez:
+O projeto inclui um Makefile que simplifica todas as operações:
 
 ```bash
-./setup-vault.sh
+# Ver todos os comandos disponíveis
+make help
+
+# Configurar o Vault
+make setup
+
+# Verificar status
+make status
+
+# Ver o token de serviço
+make view-token
+```
+
+### Configuração Manual
+
+Para configurar o Vault manualmente:
+
+```bash
+./scripts/setup-vault.sh
 ```
 
 Este comando irá:
@@ -36,24 +55,42 @@ Este comando irá:
 Para reiniciar o Vault do zero (remove todos os dados):
 
 ```bash
-./reset-vault.sh
-```
+# Usando Makefile
+make reset
 
-Ou alternativamente:
-
-```bash
-./setup-vault.sh --reset
+# Manualmente
+./scripts/reset-vault.sh
 ```
 
 ### Reinicialização do Sistema
 
-Ao reiniciar o sistema ou o container do Vault, execute:
+Ao reiniciar o sistema ou o container do Vault:
 
 ```bash
-./setup-vault.sh
+# Usando Makefile
+make restart
+make setup
+
+# Manualmente
+./scripts/setup-vault.sh
 ```
 
 O script é inteligente o suficiente para detectar que o Vault já está inicializado e irá apenas desbloquá-lo se necessário.
+
+## Comandos do Makefile
+
+| Comando | Descrição |
+|---------|-----------|
+| `make setup` | Configura o Vault (mantém dados existentes) |
+| `make reset` | Remove dados e reinicia o Vault |
+| `make status` | Verifica o status atual do Vault |
+| `make restart` | Reinicia o container do Vault |
+| `make clean` | Para o container e remove volumes |
+| `make check` | Verifica a conexão com o Vault |
+| `make init` | Apenas inicializa o container |
+| `make shell` | Abre um shell dentro do container |
+| `make view-token` | Mostra o token de serviço atual |
+| `make view-env` | Mostra as variáveis de ambiente |
 
 ## Variáveis de Ambiente
 
@@ -73,15 +110,18 @@ Após a configuração, a seguinte estrutura será criada:
 
 ```
 vault/
+├── scripts/
+│   ├── setup-vault.sh         # Script de configuração
+│   └── reset-vault.sh         # Script de reset
 ├── data/
-│   ├── vault-config.json     # Configuração do Vault
-│   ├── vault-init.txt        # Informações de inicialização
-│   ├── wallet-policy.hcl     # Política para o serviço wallet
-│   └── service-token.txt     # Token do serviço wallet
-├── docker-compose.yml        # Configuração do Docker
-├── .env                      # Variáveis de ambiente
-├── setup-vault.sh            # Script de configuração
-└── reset-vault.sh            # Script de reset
+│   ├── vault-config.json      # Configuração do Vault
+│   ├── vault-init.txt         # Informações de inicialização
+│   ├── wallet-policy.hcl      # Política para o serviço wallet
+│   └── service-token.txt      # Token do serviço wallet
+├── docker-compose.yml         # Configuração do Docker
+├── Makefile                   # Facilita a execução de comandos
+├── .env                       # Variáveis de ambiente
+└── readme.md                  # Esta documentação
 ```
 
 ## Uso na Aplicação
@@ -111,7 +151,11 @@ Use o `VAULT_ROOT_TOKEN` para fazer login.
 Se o Vault estiver selado após uma reinicialização:
 
 ```bash
-./setup-vault.sh
+# Usando Makefile
+make setup
+
+# Manualmente
+./scripts/setup-vault.sh
 ```
 
 ### Erro de permissão ao acessar o Vault
@@ -119,17 +163,27 @@ Se o Vault estiver selado após uma reinicialização:
 Verifique se o token no arquivo `.env` é válido:
 
 ```bash
+# Usando Makefile
+make check
+
+# Manualmente
 docker exec vault vault token lookup
 ```
 
-Se inválido, execute `./setup-vault.sh` para gerar um novo token.
+Se inválido, execute `make setup` para gerar um novo token.
 
 ### Perda das Credenciais
 
 Se você perder o arquivo `.env` e o diretório `data/`:
 
-1. Execute `./reset-vault.sh` para limpar completamente
-2. Execute `./setup-vault.sh` para reconfigurar
+```bash
+# Usando Makefile
+make reset
+
+# Manualmente
+./scripts/reset-vault.sh
+./scripts/setup-vault.sh
+```
 
 ## Segurança
 
