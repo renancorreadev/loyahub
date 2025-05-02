@@ -7,7 +7,7 @@ SERVICE_DIRS=(
   "infra/compose/keycloak"
   "infra/compose/minio"
   "infra/compose/monitoring"
-  "infra/compose/vault"
+  # "infra/compose/vault"
   "infra/compose/thegraph"
 )
 
