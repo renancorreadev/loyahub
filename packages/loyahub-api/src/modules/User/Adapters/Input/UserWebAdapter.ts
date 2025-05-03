@@ -64,7 +64,7 @@ export class UserWebAdapter {
 				this.logger.log(`username: ${registerDTO.username}`);
 				this.logger.log(`password: ${registerDTO.password}`);
 				this.logger.log(`address:: ${JSON.stringify(registerDTO.address)}`);
-
+				
 				registerDTO.isAdmin ? this.logger.log(`isAdmin: ${registerDTO.isAdmin}`) : this.logger.log(`isAdmin: false`);
 				this.logger.log('---------- PROCESS END ----------');
 

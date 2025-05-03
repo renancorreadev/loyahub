@@ -22,3 +22,4 @@ export * from './Testimonials.tsx';
 export * from './DrexOverview.tsx';
 export * from './PointsOverview.tsx';
 export * from './FeaturesSection.tsx';
+export * from './Progress.tsx';

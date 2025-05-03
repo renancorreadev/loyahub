@@ -169,8 +169,7 @@ contract PointCore is
         uint256 currentLevel = clientLevel[clientId];
         uint256 newLevel = 0;
 
-        clientLevel[clientId] = newLevel;
-
+        // Calcula o novo nível
         if (currentPoints >= pointsForTitanium) {
             newLevel = CUSTOMER_TITANIUM;
         } else if (currentPoints >= pointsForGold) {
@@ -178,6 +177,9 @@ contract PointCore is
         } else if (currentPoints >= pointsForPremium) {
             newLevel = CUSTOMER_PREMIUM;
         }
+
+        // Atualiza o nível no armazenamento
+        clientLevel[clientId] = newLevel;
 
         address clientAddress = customerManagerInstance.getClientwalletAddress(
             clientId
@@ -187,11 +189,6 @@ contract PointCore is
             burnPreviousLevelToken(clientId, clientAddress, currentLevel);
             _mint(clientAddress, newLevel, 1, '');
             emitMintEvent(clientId, newLevel);
-
-            // if (newLevel == CUSTOMER_TITANIUM) {
-            //     clientPoints[clientId] = 0;
-            //     emit ClientPointsReset(clientId);
-            // }
         }
 
         emit ClientPointsChanged(clientId, clientPoints[clientId]);

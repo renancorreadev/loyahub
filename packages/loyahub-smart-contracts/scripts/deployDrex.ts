@@ -8,7 +8,7 @@ async function main() {
   // Parâmetros do Drex
   const name = process.env.DREX_NAME || 'Digital Real';
   const symbol = process.env.DREX_SYMBOL || 'DREX';
-  const initialSupply = process.env.DREX_INITIAL_SUPPLY || ethers.parseEther('1000000'); // 1 milhão por padrão
+  const initialSupply = process.env.DREX_INITIAL_SUPPLY || ethers.parseEther('10000000000000000000000000000000000000000000000000000000000'); // 1 milhão por padrão
 
   console.log(`Nome: ${name}`);
   console.log(`Símbolo: ${symbol}`);
