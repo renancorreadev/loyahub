@@ -12,6 +12,8 @@ services:
       - KC_DB_PASSWORD=root
       - KC_CACHE=local
       - KC_HTTP_ENABLED=true
+    volumes:
+      - ./config:/opt/keycloak/data/import
     depends_on:
       db_keycloak:
         condition: service_healthy
