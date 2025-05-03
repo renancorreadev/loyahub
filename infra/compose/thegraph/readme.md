@@ -27,3 +27,10 @@
 curl -X POST http://localhost:8000/subgraphs/name/drex \
  -H "Content-Type: application/json" \
  --data '{ "query": "{ transfers(first: 5) { id from to value } }" }'
+
+
+
+
+1 - cd Drex
+2 - graph codegen 
+3 - bash init.sh
