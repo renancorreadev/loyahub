@@ -35,6 +35,7 @@ export class UserAdapter {
 		const newUser = this.userRepository.create({
 			email,
 			username,
+			age,
 			password: hashedPassword,
 			profileImageUrl,
 			walletAddress,
