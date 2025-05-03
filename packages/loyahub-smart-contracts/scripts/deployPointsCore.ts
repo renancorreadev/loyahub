@@ -26,6 +26,20 @@ async function main() {
     proxyContractAddress
   );
 
+  // Verificar se o endereço do Drex está definido
+  const drexAddress = process.env.DREX_CONTRACT_ADDRESS;
+  if (!drexAddress) {
+    console.error('Erro: DREX_CONTRACT_ADDRESS não está definido no arquivo .env');
+    console.error('Execute o deploy do Drex primeiro com "make deploy-sc" ou "pnpm sc:deploy:drex"');
+    process.exitCode = 1;
+    return;
+  }
+
+  console.log(`Usando endereço do token Drex: ${drexAddress}`);
+  const tx = await deployContract.setPointsTokenAddress(drexAddress);
+  await tx.wait();
+  console.log('Endereço do token de pontos configurado com sucesso!');
+
   const data = {
     proxyAddress: proxyContractAddress,
     implementationAddress: newImplementationAddress,
@@ -33,6 +47,7 @@ async function main() {
 
   console.log('Proxy address:', proxyContractAddress);
   console.log('Implementation address:', newImplementationAddress);
+  console.log('setPointTokenDrex tx:', tx.hash);
 
   fs.writeFileSync(
     '.deployed/deploys/PointCore.json',

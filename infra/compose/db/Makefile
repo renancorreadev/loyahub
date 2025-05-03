@@ -1,5 +1,5 @@
 # Makefile para gerenciamento do PostgreSQL
-.PHONY: help setup reset status restart clean check init shell create-db list-db backup restore
+.PHONY: help setup reset reset-tables status restart clean check init shell create-db list-db backup restore
 
 # Variáveis
 SCRIPTS_DIR = ./scripts
@@ -24,6 +24,7 @@ help:
 	@echo "${GREEN}Comandos disponíveis:${NC}"
 	@echo "  ${YELLOW}make setup${NC}        - Configura o PostgreSQL"
 	@echo "  ${YELLOW}make reset${NC}        - Remove todos os dados e reinicia o PostgreSQL (⚠️ Cuidado!)"
+	@echo "  ${YELLOW}make reset-tables${NC} - Limpa dados de tabelas específicas mantendo a estrutura"
 	@echo "  ${YELLOW}make status${NC}       - Verifica o status atual do PostgreSQL"
 	@echo "  ${YELLOW}make restart${NC}      - Reinicia o container do PostgreSQL"
 	@echo "  ${YELLOW}make clean${NC}        - Para o container e remove volumes (⚠️ Cuidado!)"
@@ -50,6 +51,12 @@ reset:
 	@chmod +x $(SCRIPTS_DIR)/reset-db.sh
 	@$(SCRIPTS_DIR)/reset-db.sh
 	@$(MAKE) setup
+
+reset-tables:
+	@echo "${YELLOW}Resetando tabelas específicas do banco de dados...${NC}"
+	@chmod +x $(SCRIPTS_DIR)/reset-tables.sh
+	@$(SCRIPTS_DIR)/reset-tables.sh || echo "${RED}Erro ao resetar tabelas.${NC}"
+	@echo "${GREEN}Processo concluído.${NC}"
 
 status:
 	@echo "${GREEN}Verificando status do PostgreSQL...${NC}"
