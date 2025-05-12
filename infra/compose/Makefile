@@ -32,7 +32,7 @@ WHITE := \033[37m
 
 # Mapeamento de comandos específicos por serviço
 BESU_START_CMD := start
-THEGRAPH_START_CMD := up
+THEGRAPH_START_CMD := setup
 MONITORING_START_CMD := up
 VAULT_START_CMD := setup
 DB_START_CMD := setup
@@ -170,7 +170,9 @@ help: ## Exibe ajuda com todos os targets e descrições
 			rm -rf besu/data/*; \
 		fi; \
 		$(MAKE) -C $* setup && $(MAKE) -C $* start; \
-	elif [ "$*" = "thegraph" ] || [ "$*" = "monitoring" ]; then \
+	elif [ "$*" = "thegraph" ]; then \
+		$(MAKE) -C $* setup; \
+	elif [ "$*" = "monitoring" ]; then \
 		$(MAKE) -C $* up; \
 	else \
 		$(MAKE) -C $* setup; \
@@ -235,7 +237,9 @@ all: .env-check
 				rm -rf besu/data/*; \
 			fi; \
 			$(MAKE) -C $$service setup && $(MAKE) -C $$service start; \
-		elif [ "$$service" = "thegraph" ] || [ "$$service" = "monitoring" ]; then \
+		elif [ "$$service" = "thegraph" ]; then \
+			$(MAKE) -C $$service setup; \
+		elif [ "$$service" = "monitoring" ]; then \
 			$(MAKE) -C $$service up; \
 		else \
 			$(MAKE) -C $$service setup; \
@@ -260,7 +264,9 @@ start: ## Inicia um serviço específico
 			rm -rf besu/data/*; \
 		fi; \
 		$(MAKE) -C $(SERVICE) setup && $(MAKE) -C $(SERVICE) start; \
-	elif [ "$(SERVICE)" = "thegraph" ] || [ "$(SERVICE)" = "monitoring" ]; then \
+	elif [ "$(SERVICE)" = "thegraph" ]; then \
+		$(MAKE) -C $(SERVICE) setup; \
+	elif [ "$(SERVICE)" = "monitoring" ]; then \
 		$(MAKE) -C $(SERVICE) up; \
 	else \
 		$(MAKE) -C $(SERVICE) setup; \
