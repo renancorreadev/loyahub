@@ -37,9 +37,19 @@ export class ERC20ManagerBlockchainAdapter implements ERC20ManagerBlockchainToke
 				throw new Error('Wallet address not found for the user');
 			}
 
-			const connector = this.getConnector();
+			if (!walletAddress.match(/^0x[0-9a-fA-F]{40}$/)) {
+				throw new Error('Invalid wallet address format');
+			}
 
-			return await connector.balanceOf(walletAddress);
+			const connector = this.getConnector();
+			
+			try {
+				const balance = await connector.balanceOf(walletAddress);
+				return balance;
+			} catch (error) {
+				this.logger.warn(`Error fetching balance, returning zero: ${error.message || error}`);
+				return 0;
+			}
 		} catch (error) {
 			this.logger.error(`Error getting Drex balance: ${error.message || error}`);
 			throw new Error('An error occurred while fetching the Drex balance.');

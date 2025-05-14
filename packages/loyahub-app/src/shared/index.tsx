@@ -4,13 +4,14 @@ import { Footer } from './Footer';
 
 interface LayoutProps {
   children: ReactNode;
+  [key: string]: any;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children, ...props }) => {
   return (
-    <div data-testid="layout">
+    <div className="min-h-screen flex flex-col bg-white" {...props}>
       <Header />
-      <main>{children}</main>
+      <main className="flex-grow">{children}</main>
       <Footer />
     </div>
   );

@@ -9,8 +9,7 @@ import { HomeContent } from './pages/Home';
 
 import { useUserStore } from '@/store/store';
 import { Dashboard } from './pages/Dashboard';
-
-import { HeaderProfile } from './shared/Header/HeaderProfile';
+import ProfilePage from './pages/Profile';
 import { Register } from './pages/Register';
 
 import { ModalProvider } from './context/modal-provider';
@@ -31,7 +30,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route
           path="/profile"
-          element={isLogged ? <HeaderProfile /> : <Navigate to="/login" />}
+          element={isLogged ? <ProfilePage /> : <Navigate to="/login" />}
         />
         <Route
           path="/dashboard"

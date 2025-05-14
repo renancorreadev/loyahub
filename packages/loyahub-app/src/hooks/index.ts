@@ -4,3 +4,4 @@ export * from './useFetchDrexBalance';
 export * from './useIsMobile';
 export * from './useFetchTransfers';
 export * from './useTokenTransfer';
+export * from './useFetchClientMetadadaInsigny';
