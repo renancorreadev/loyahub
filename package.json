@@ -4,8 +4,8 @@
   "description": "A Client Management in Blockchain",
   "private": true,
   "scripts": {
-    "run-infra": "bash scripts/run-infra.sh",
-    "stop-infra": "bash scripts/stop-infra.sh",
+    "run-infra": "cd infra/compose && make all",
+    "stop-infra": "cd infra/compose && make clean",
     "start": "lerna run --parallel --stream --no-bail dev --scope loyahub-blockchain-service --scope loyahub-admin-ui --scope loyahub-app --scope loyahub-doc",
     "start:full": "lerna run --parallel --stream --no-bail dev --scope loyahub-blockchain-service --scope loyahub-api --scope loyahub-admin-ui --scope loyahub-app --scope loyahub-doc",
     "start:thegraph": "bash infra/compose/thegraph/drex/init.sh",

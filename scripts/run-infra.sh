@@ -2,7 +2,7 @@
 
 # Lista de diretórios de serviços
 SERVICE_DIRS=(
-  "infra/compose/besu"
+  # "infra/compose/besu"
   "infra/compose/db"
   "infra/compose/keycloak"
   "infra/compose/minio"

@@ -1,11 +1,21 @@
 services:
   ipfs:
     container_name: ipfs
-    image: ipfs/go-ipfs:v0.9.1
+    image: ipfs/kubo:v0.22.0
+    platform: linux/arm64
     ports:
-      - '5001:5001'
+      - "5001:5001"
+      - "4001:4001"
+      - "8081:8080"
     networks:
       - protocol
+    healthcheck:
+      test: ["CMD", "ipfs", "id"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ipfs_data:/data/ipfs
 
   postgres-graph:
     container_name: postgres-graph
@@ -16,36 +26,51 @@ services:
       POSTGRES_DB: graph
       POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
     ports:
-      - '5433:5432'
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - protocol
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U graph"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   graph-node:
     container_name: graph-node
-    image: graphprotocol/graph-node
+    image: graphprotocol/graph-node:v0.37.0
+    platform: linux/amd64
     ports:
-      - '8000:8000'
-      - '8020:8020'
-      - '8030:8030'
-      - '8040:8040'
+      - "8000:8000"
+      - "8020:8020"
+      - "8030:8030"
+      - "8040:8040"
     depends_on:
-      - ipfs
-      - postgres-graph
+      ipfs:
+        condition: service_healthy
+      postgres-graph:
+        condition: service_healthy
     environment:
       postgres_host: postgres-graph
       postgres_user: graph
       postgres_pass: letmein
       postgres_db: graph
-      ipfs: 'http://ipfs:5001'
-      ethereum: 'private:http://bootnode:8545'
+      ipfs: "http://ipfs:5001"
+      ethereum: "private:http://bootnode:8545"
+      GRAPH_LOG: info
+      RUST_BACKTRACE: full
+      ETHEREUM_POLLING_INTERVAL: 1000
+      ETHEREUM_REORG_THRESHOLD: 50
     networks:
       - protocol
+    restart: unless-stopped
 
 volumes:
   pgdata:
+    driver: local
+  ipfs_data:
     driver: local
 
 networks:
