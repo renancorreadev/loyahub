@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum
     name: Drex
-    network: mainnet
+    network: private
     source:
       address: "0x452cdd0B9fe8c0300582b4185Efb82afce7f6820"
       abi: Drex

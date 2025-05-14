@@ -1,0 +1,43 @@
+# Binários Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+build/
+bin/
+
+# Output do test
+*.test
+*.out
+
+# Dependências e módulos
+/vendor/
+
+# Configurações
+.env
+.env.local
+
+# Logs
+*.log
+
+# Arquivos temporários
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
+
+# Arquivos específicos de IDE e SOs
+.idea/
+.vscode/
+.DS_Store
+.history/
+__debug*
+
+# Configurações específicas do projeto
+tmp/
+
+# Volumes Docker
+postgres_data/
+rabbitmq_data/ 
